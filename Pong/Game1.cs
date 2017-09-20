@@ -165,7 +165,7 @@ namespace Pong
             spriteBatch.Begin();
             if (GameMode == 0)
             {
-                spriteBatch.DrawString(Font1, "Play", new Vector2(ScreenWidth / 2, ScreenHeight / 2), Color.White);
+                spriteBatch.DrawString(Font1, "Press Enter to start", new Vector2(ScreenWidth / 2, ScreenHeight / 2), Color.White);
             }
 
             if (GameMode == 1)
