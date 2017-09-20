@@ -5,7 +5,6 @@ using System;
 using System.Diagnostics;
 
 using System.Drawing;
-using System.Drawing.Font;
 
 namespace Pong
 {
@@ -156,6 +155,8 @@ namespace Pong
 
             if (Keyboard.GetState().IsKeyDown(Keys.P)) Debugger.Break();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.F)) graphics.ToggleFullScreen();
+
         }
 
         protected override void Draw(GameTime gameTime)
@@ -165,7 +166,7 @@ namespace Pong
             spriteBatch.Begin();
             if (GameMode == 0)
             {
-                spriteBatch.Drawstring(Font1, "Play", new Vector2(ScreenWidth/2, ScreenHeight/2), Color.White);
+                spriteBatch.DrawString(Font1, "Play", new Vector2(ScreenWidth / 2, ScreenHeight / 2), Color.White);
             }
 
             if (GameMode == 1)
