@@ -16,15 +16,21 @@ namespace Pong
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         //public KeyboardState CurrentKBState;
+
+        //textures
         Texture2D ball;
         Texture2D Paddle1;
         Texture2D Paddle2;
+
+        //object vars
         float Paddle1Y;
         float Paddle2Y;
         float BallY;
         float BallX;
         //bool BallUp = true;
         //bool BallRight = false;
+
+        //extra vars
         float speed = 3f;
         float BallAngle;
         float ScreenWidth;
