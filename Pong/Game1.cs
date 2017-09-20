@@ -25,7 +25,6 @@ namespace Pong
         float Paddle2Y;
         float BallY;
         float BallX;
-
         //bool BallUp = true;
         //bool BallRight = false;
 
