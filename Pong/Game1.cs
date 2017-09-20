@@ -28,17 +28,21 @@ namespace Pong
         //bool BallUp = true;
         //bool BallRight = false;
 
-        //extra vars
+        //variable vars
+        int Lives1 = 3, Lives2 = 3;
         float speed = 3f;
+        
+
+        //general vars
+        int GameMode = 0;
+        int StartSide;
         float BallAngle;
         float ScreenWidth;
         float ScreenHeight;
-        int StartSide;
+        
         float DebugX, DebugY;
         SpriteFont Font1;
-        int Lives1 = 3, Lives2 = 3;
-        int GameMode = 0;
-
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,21 +52,25 @@ namespace Pong
 
         //Initialize Initialize Initialize Initialize Initialize Initialize
         protected override void Initialize()
-        {
+        {   
+            ///graphics loader
+            //sprites
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ball = Content.Load<Texture2D>("ball");
             Paddle1 = Content.Load<Texture2D>("Paddle1");
             Paddle2 = Content.Load<Texture2D>("Paddle2");
             Font1 = Content.Load <SpriteFont>("Magnum");
-
+            //screen
             ScreenWidth = GraphicsDevice.Viewport.Width;
             ScreenHeight = GraphicsDevice.Viewport.Height;
 
-            BallY = ScreenHeight / 2 - ball.Height / 2;
-            BallX = ScreenWidth / 2 - ball.Width / 2;
-            Paddle1Y = ScreenHeight / 2 - Paddle1.Height / 2;
-            Paddle2Y = ScreenHeight / 2 - Paddle2.Height / 2;
-
+            ///positioning
+            //ball
+            BallY = (ScreenHeight / 2) - (ball.Height / 2);
+            BallX = (ScreenWidth / 2) - (ball.Width / 2);
+            Paddle1Y = (ScreenHeight / 2) - (Paddle1.Height / 2);
+            Paddle2Y = (ScreenHeight / 2) - (Paddle2.Height / 2);
+            //bal start angle
             Random random = new Random();
             BallAngle = random.Next(-45, 46);
             StartSide = random.Next(0, 2);
