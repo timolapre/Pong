@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 
 using System.Drawing;
+using System.Drawing.Font;
 
 namespace Pong
 {
@@ -163,7 +164,7 @@ namespace Pong
             spriteBatch.Begin();
             if (GameMode == 0)
             {
-                spriteBatch.Drawstring(Font1, "Play", );
+                spriteBatch.Drawstring(Font1, "Play", new Vector2(ScreenWidth/2, ScreenHeight/2), Color.White);
             }
 
             if (GameMode == 1)
