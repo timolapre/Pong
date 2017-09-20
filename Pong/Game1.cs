@@ -32,7 +32,6 @@ namespace Pong
         int Lives1 = 3, Lives2 = 3;
         float speed = 3f;
         
-
         //general vars
         int GameMode = 0;
         int StartSide;
