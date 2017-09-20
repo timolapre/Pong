@@ -86,75 +86,90 @@ namespace Pong
         //UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE
         protected override void Update(GameTime gameTime)
         {
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            if (Keyboard.GetState().IsKeyDown(Keys.W) && Paddle1Y > 0)
-                {
-                    Paddle1Y = Paddle1Y-4;
-                }
-            if (Keyboard.GetState().IsKeyDown(Keys.S) && Paddle1Y < 383)
-                {
-                    Paddle1Y = Paddle1Y+4;
-                }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) && Paddle2Y > 0)
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
-                Paddle2Y = Paddle2Y - 4;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Down) && Paddle2Y < 383)
-            {
-                Paddle2Y = Paddle2Y + 4;
-            }
-
-            if (BallY + ball.Height / 2 > Paddle2Y + Paddle2.Height/2 && Paddle2Y < GraphicsDevice.Viewport.Height - Paddle2.Height) Paddle2Y += 1;
-            if (BallY + ball.Height / 2 < Paddle2Y + Paddle2.Height/2 && Paddle2Y > 0) Paddle2Y -= 1;
-
-            speed += 0.001f;
-
-            BallX += speed * (float)Math.Cos(BallAngle * Math.PI / 180);
-            BallY += speed * (float)Math.Sin(BallAngle * Math.PI / 180);
-
-            //if (BallUp == true) BallY += speed * (float)Math.Sin(BallAngle); else BallY += speed * (float)Math.Sin(BallAngle);
-            //if (BallRight == true) BallX += speed * (float)Math.Cos(BallAngle); else BallX += speed * (float)Math.Cos(BallAngle);
-
-            DebugY = Paddle1.Height;
-            DebugX = (float)Math.Cos(BallAngle * Math.PI / 180);
-
-            if (BallY < 0) BallAngle = -BallAngle;
-            if (BallY > GraphicsDevice.Viewport.Height-ball.Height) BallAngle = -BallAngle;
-
-            if (BallX < 0)
-            {
+                GameMode = 1;
+                Lives1 = 3;
+                Lives2 = 3;
                 BallY = 230;
                 BallX = 390;
                 speed = 3;
-                Lives1--;
+
             }
-            if (BallX > 800)
+            if (Lives1 == 0 || Lives2 == 0) GameMode = 2;
+
+            if (GameMode == 1)
             {
-                BallY = 230;
-                BallX = 390;
-                speed = 3;
-                Lives2--;
+
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    Exit();
+
+                if (Keyboard.GetState().IsKeyDown(Keys.W) && Paddle1Y > 0)
+                {
+                    Paddle1Y = Paddle1Y - 4;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.S) && Paddle1Y < 383)
+                {
+                    Paddle1Y = Paddle1Y + 4;
+                }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Up) && Paddle2Y > 0)
+                {
+                    Paddle2Y = Paddle2Y - 4;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Down) && Paddle2Y < 383)
+                {
+                    Paddle2Y = Paddle2Y + 4;
+                }
+
+                if (BallY + ball.Height / 2 > Paddle2Y + Paddle2.Height / 2 && Paddle2Y < GraphicsDevice.Viewport.Height - Paddle2.Height) Paddle2Y += 1.95f;
+                if (BallY + ball.Height / 2 < Paddle2Y + Paddle2.Height / 2 && Paddle2Y > 0) Paddle2Y -= 1.95f;
+
+                speed += 0.001f;
+
+                BallX += speed * (float)Math.Cos(BallAngle * Math.PI / 180);
+                BallY += speed * (float)Math.Sin(BallAngle * Math.PI / 180);
+
+                //if (BallUp == true) BallY += speed * (float)Math.Sin(BallAngle); else BallY += speed * (float)Math.Sin(BallAngle);
+                //if (BallRight == true) BallX += speed * (float)Math.Cos(BallAngle); else BallX += speed * (float)Math.Cos(BallAngle);
+
+                DebugY = Paddle1.Height;
+                DebugX = (float)Math.Cos(BallAngle * Math.PI / 180);
+
+                if (BallY < 0) BallAngle = -BallAngle;
+                if (BallY > GraphicsDevice.Viewport.Height - ball.Height) BallAngle = -BallAngle;
+
+                if (BallX < 0)
+                {
+                    BallY = 230;
+                    BallX = 390;
+                    speed = 3;
+                    Lives1--;
+                }
+                if (BallX > 800)
+                {
+                    BallY = 230;
+                    BallX = 390;
+                    speed = 3;
+                    Lives2--;
+                }
+
+                Rectangle P1B = Paddle1.Bounds;
+                P1B.Offset(50, Paddle1Y);
+                Rectangle P2B = Paddle2.Bounds;
+                P2B.Offset(ScreenWidth - 50, Paddle2Y);
+                Rectangle ballB = ball.Bounds;
+                ballB.Offset(BallX, BallY);
+
+                if (ballB.Intersects(P1B)) BallAngle = (BallY + ball.Height / 2) - (Paddle1Y + Paddle1.Height / 2);
+                if (ballB.Intersects(P2B)) BallAngle = (Paddle2Y + Paddle2.Height / 2) - (BallY + ball.Height / 2) + 180;
+
+                base.Update(gameTime);
+
+                if (Keyboard.GetState().IsKeyDown(Keys.F)) graphics.ToggleFullScreen();
+
             }
-
-            Rectangle P1B = Paddle1.Bounds;
-            P1B.Offset(50, Paddle1Y);
-            Rectangle P2B = Paddle2.Bounds;
-            P2B.Offset(ScreenWidth - 50, Paddle2Y);
-            Rectangle ballB = ball.Bounds;
-            ballB.Offset(BallX, BallY);
-
-            if (ballB.Intersects(P1B)) BallAngle = (BallY+ball.Height/2)-(Paddle1Y+Paddle1.Height/2);
-            if (ballB.Intersects(P2B)) BallAngle = (Paddle2Y + Paddle2.Height / 2) - (BallY + ball.Height / 2) + 180;
-
-            base.Update(gameTime);
-
             if (Keyboard.GetState().IsKeyDown(Keys.P)) Debugger.Break();
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F)) graphics.ToggleFullScreen();
 
         }
 
@@ -165,12 +180,13 @@ namespace Pong
             spriteBatch.Begin();
             if (GameMode == 0)
             {
-                spriteBatch.DrawString(Font1, "Press Enter to start", new Vector2(ScreenWidth / 2, ScreenHeight / 2), Color.White);
+                float PressEnter = Font1.MeasureString("Press Enter to start").X;
+                spriteBatch.DrawString(Font1, "Press Enter to start", new Vector2(ScreenWidth / 2 - PressEnter / 2, ScreenHeight / 2), Color.White);
             }
 
             if (GameMode == 1)
             {
-                spriteBatch.Draw(ball, new Vector2(BallX, BallY), Color.PeachPuff);
+                spriteBatch.Draw(ball, new Vector2(BallX, BallY), Color.White);
                 spriteBatch.Draw(Paddle1, new Vector2(50, Paddle1Y), Color.White);
                 spriteBatch.Draw(Paddle2, new Vector2(ScreenWidth - 50, Paddle2Y), Color.White);
                 if (Lives1 >= 3) spriteBatch.Draw(ball, new Vector2(90, 20), Color.Blue);
@@ -180,6 +196,18 @@ namespace Pong
                 if (Lives2 >= 3) spriteBatch.Draw(ball, new Vector2(ScreenWidth - 90, 20), Color.Red);
                 if (Lives2 >= 2) spriteBatch.Draw(ball, new Vector2(ScreenWidth - 70, 20), Color.Red);
                 if (Lives2 >= 1) spriteBatch.Draw(ball, new Vector2(ScreenWidth - 50, 20), Color.Red);
+            }
+
+            if(GameMode == 2)
+            {
+                float YouWin = Font1.MeasureString("You Win").X;
+                if (Lives2 == 0) spriteBatch.DrawString(Font1, "You Win", new Vector2(ScreenWidth / 2 - YouWin / 2, ScreenHeight / 2), Color.White);
+
+                float YouLose = Font1.MeasureString("You Lose").X;
+                if (Lives1 == 0) spriteBatch.DrawString(Font1, "You Lose", new Vector2(ScreenWidth / 2 - YouLose / 2, ScreenHeight / 2), Color.White);
+
+                float PlayAgain = Font1.MeasureString("Press Enter to play again").X;
+                spriteBatch.DrawString(Font1, "Press Enter to play again", new Vector2(ScreenWidth / 2 - PlayAgain / 2, ScreenHeight / 2 + 35), Color.White);
             }
 
             spriteBatch.End();
