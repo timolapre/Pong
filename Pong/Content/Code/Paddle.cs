@@ -8,6 +8,9 @@ namespace Pong.Content.Code
 {
     class Paddle
     {
-
+        public void Update(Game1 game1)
+        {
+            
+        }
     }
 }

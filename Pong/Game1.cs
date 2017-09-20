@@ -4,9 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Diagnostics;
 
-//using System.Collections.Generic;
-//using System.Threading;
-//using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Pong
 {
@@ -27,6 +25,7 @@ namespace Pong
         float Paddle2Y;
         float BallY;
         float BallX;
+
         //bool BallUp = true;
         //bool BallRight = false;
 
@@ -37,6 +36,9 @@ namespace Pong
         float ScreenHeight;
         int StartSide;
         float DebugX, DebugY;
+        SpriteFont Font1;
+        int Lives1 = 3, Lives2 = 3;
+        int GameMode = 0;
 
         public Game1()
         {
@@ -52,6 +54,7 @@ namespace Pong
             ball = Content.Load<Texture2D>("ball");
             Paddle1 = Content.Load<Texture2D>("Paddle1");
             Paddle2 = Content.Load<Texture2D>("Paddle2");
+            Font1 = Content.Load <SpriteFont>("Magnum");
 
             ScreenWidth = GraphicsDevice.Viewport.Width;
             ScreenHeight = GraphicsDevice.Viewport.Height;
@@ -99,8 +102,8 @@ namespace Pong
                 Paddle2Y = Paddle2Y + 4;
             }
 
-            if (BallY + ball.Height / 2 > Paddle2Y + Paddle2.Height/2 && Paddle2Y < GraphicsDevice.Viewport.Height - Paddle2.Height) Paddle2Y += 2;
-            if (BallY + ball.Height / 2 < Paddle2Y + Paddle2.Height/2 && Paddle2Y > 0) Paddle2Y -= 2;
+            if (BallY + ball.Height / 2 > Paddle2Y + Paddle2.Height/2 && Paddle2Y < GraphicsDevice.Viewport.Height - Paddle2.Height) Paddle2Y += 1;
+            if (BallY + ball.Height / 2 < Paddle2Y + Paddle2.Height/2 && Paddle2Y > 0) Paddle2Y -= 1;
 
             speed += 0.001f;
 
@@ -116,11 +119,19 @@ namespace Pong
             if (BallY < 0) BallAngle = -BallAngle;
             if (BallY > GraphicsDevice.Viewport.Height-ball.Height) BallAngle = -BallAngle;
 
-            if (BallX < 0 || BallX > 800)
+            if (BallX < 0)
             {
                 BallY = 230;
                 BallX = 390;
                 speed = 3;
+                Lives1--;
+            }
+            if (BallX > 800)
+            {
+                BallY = 230;
+                BallX = 390;
+                speed = 3;
+                Lives2--;
             }
 
             Rectangle P1B = Paddle1.Bounds;
@@ -135,21 +146,37 @@ namespace Pong
 
             base.Update(gameTime);
 
-            if(Keyboard.GetState().IsKeyDown(Keys.P)) Debugger.Break();
+            if (Keyboard.GetState().IsKeyDown(Keys.P)) Debugger.Break();
 
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.DarkGray);
+
             spriteBatch.Begin();
-            spriteBatch.Draw(ball, new Vector2(BallX, BallY), Color.White);
-            spriteBatch.Draw(Paddle1, new Vector2(50, Paddle1Y), Color.White);
-            spriteBatch.Draw(Paddle2, new Vector2(ScreenWidth-50, Paddle2Y), Color.White);
+            if (GameMode == 0)
+            {
+                spriteBatch.Drawstring(Font1, "Play", );
+            }
+
+            if (GameMode == 1)
+            {
+                spriteBatch.Draw(ball, new Vector2(BallX, BallY), Color.PeachPuff);
+                spriteBatch.Draw(Paddle1, new Vector2(50, Paddle1Y), Color.White);
+                spriteBatch.Draw(Paddle2, new Vector2(ScreenWidth - 50, Paddle2Y), Color.White);
+                if (Lives1 >= 3) spriteBatch.Draw(ball, new Vector2(90, 20), Color.Blue);
+                if (Lives1 >= 2) spriteBatch.Draw(ball, new Vector2(70, 20), Color.Blue);
+                if (Lives1 >= 1) spriteBatch.Draw(ball, new Vector2(50, 20), Color.Blue);
+
+                if (Lives2 >= 3) spriteBatch.Draw(ball, new Vector2(ScreenWidth - 90, 20), Color.Red);
+                if (Lives2 >= 2) spriteBatch.Draw(ball, new Vector2(ScreenWidth - 70, 20), Color.Red);
+                if (Lives2 >= 1) spriteBatch.Draw(ball, new Vector2(ScreenWidth - 50, 20), Color.Red);
+            }
 
             spriteBatch.End();
 
-            base.Draw(gameTime);
+            base.Draw(gameTime); 
         }
     }
 }
