@@ -20,6 +20,7 @@ namespace Pong
         Texture2D Paddle1;
         Texture2D Paddle2;
         Texture2D MiddleLine;
+        Texture2D pong;
 
         //object vars
         float Paddle1Y;
@@ -64,6 +65,7 @@ namespace Pong
             Paddle2 = Content.Load<Texture2D>("Paddle2");
             Font1 = Content.Load<SpriteFont>("Magnum");
             MiddleLine = Content.Load<Texture2D>("MiddleLine");
+            pong = Content.Load<Texture2D>("pong");
             //screen
             ScreenWidth = GraphicsDevice.Viewport.Width;
             ScreenHeight = GraphicsDevice.Viewport.Height;
@@ -197,9 +199,11 @@ namespace Pong
             spriteBatch.Begin();
             if (GameMode == 0)
             {
+                //Menu image
+                spriteBatch.Draw(pong, new Vector2(), Color.White);
                 //Menu text
                 float PressEnter = Font1.MeasureString("Press Enter to start").X;
-                spriteBatch.DrawString(Font1, "Press Enter to start", new Vector2(ScreenWidth / 2 - PressEnter / 2, ScreenHeight / 2), Color.White);
+                spriteBatch.DrawString(Font1, "Press Enter to start", new Vector2((ScreenWidth / 2 - 70) - PressEnter / 2, (ScreenHeight / 2 - 40)), Color.White);
             }
 
             if (GameMode == 1)
