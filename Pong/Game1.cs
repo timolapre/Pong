@@ -21,6 +21,8 @@ namespace Pong
         Texture2D Paddle2;
         Texture2D MiddleLine;
         Texture2D pong;
+        Texture2D bluebar;
+        Texture2D redbar;
 
         //object vars
         float Paddle1Y;
@@ -66,6 +68,8 @@ namespace Pong
             Font1 = Content.Load<SpriteFont>("Magnum");
             MiddleLine = Content.Load<Texture2D>("MiddleLine");
             pong = Content.Load<Texture2D>("pong");
+            bluebar = Content.Load<Texture2D>("bluebar");
+            redbar = Content.Load<Texture2D>("redbar");
             //screen
             ScreenWidth = GraphicsDevice.Viewport.Width;
             ScreenHeight = GraphicsDevice.Viewport.Height;
@@ -214,10 +218,14 @@ namespace Pong
                 spriteBatch.Draw(Paddle2, new Vector2(ScreenWidth - Paddle2.Bounds.Width - 20, Paddle2Y), Color.Red);
                 spriteBatch.Draw(MiddleLine, new Vector2(ScreenWidth / 2 - MiddleLine.Bounds.Width / 2, ScreenHeight / 2 - MiddleLine.Bounds.Height / 2), Color.White);
                 //Draw Lives Player1
+                spriteBatch.Draw(bluebar, new Vector2(52, 10), Color.White);
+                spriteBatch.Draw(bluebar, new Vector2(52, 42), Color.White);
                 if (Lives1 >= 3) spriteBatch.Draw(ball, new Vector2(90, 20), Color.Blue);
                 if (Lives1 >= 2) spriteBatch.Draw(ball, new Vector2(70, 20), Color.Blue);
                 if (Lives1 >= 1) spriteBatch.Draw(ball, new Vector2(50, 20), Color.Blue);
                 //Draw Lives Player2
+                spriteBatch.Draw(redbar, new Vector2(712, 10), Color.White);
+                spriteBatch.Draw(redbar, new Vector2(712, 42), Color.White);
                 if (Lives2 >= 3) spriteBatch.Draw(ball, new Vector2(ScreenWidth - 90, 20), Color.Red);
                 if (Lives2 >= 2) spriteBatch.Draw(ball, new Vector2(ScreenWidth - 70, 20), Color.Red);
                 if (Lives2 >= 1) spriteBatch.Draw(ball, new Vector2(ScreenWidth - 50, 20), Color.Red);
