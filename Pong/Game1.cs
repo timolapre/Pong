@@ -34,6 +34,7 @@ namespace Pong
         int SpeedPaddles = 10;
         float StartSpeed = 8f;
         float speed;
+        Color ColorBall = Color.White;
 
         //general vars
         int GameMode = 0;
@@ -166,9 +167,16 @@ namespace Pong
                 Rectangle ballB = ball.Bounds;
                 ballB.Offset(BallX, BallY);
 
-                if (ballB.Intersects(P1B)) BallAngle = (BallY + ball.Height / 2) - (Paddle1Y + Paddle1.Height / 2);
-                if (ballB.Intersects(P2B)) BallAngle = (Paddle2Y + Paddle2.Height / 2) - (BallY + ball.Height / 2) + 180;
-
+                if (ballB.Intersects(P1B))
+                {
+                    BallAngle = (BallY + ball.Height / 2) - (Paddle1Y + Paddle1.Height / 2);
+                    ColorBall = Color.Blue;
+                }
+                if (ballB.Intersects(P2B))
+                {
+                    BallAngle = (Paddle2Y + Paddle2.Height / 2) - (BallY + ball.Height / 2) + 180;
+                    ColorBall = Color.Red;
+                }
                 base.Update(gameTime);
 
             }
@@ -197,7 +205,7 @@ namespace Pong
             if (GameMode == 1)
             {
                 //Draw Sprites
-                spriteBatch.Draw(ball, new Vector2(BallX, BallY), Color.White);
+                spriteBatch.Draw(ball, new Vector2(BallX, BallY), ColorBall);
                 spriteBatch.Draw(Paddle1, new Vector2(20, Paddle1Y), Color.Blue);
                 spriteBatch.Draw(Paddle2, new Vector2(ScreenWidth - Paddle2.Bounds.Width - 20, Paddle2Y), Color.Red);
                 spriteBatch.Draw(MiddleLine, new Vector2(ScreenWidth / 2 - MiddleLine.Bounds.Width / 2, ScreenHeight / 2 - MiddleLine.Bounds.Height / 2), Color.White);
