@@ -24,6 +24,7 @@ namespace Pong
         Texture2D bluebar;
         Texture2D redbar;
 
+
         //object vars
         float Paddle1Y;
         float Paddle2Y;

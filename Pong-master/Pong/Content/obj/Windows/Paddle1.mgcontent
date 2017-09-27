@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/timol/Downloads/Pong-master/Pong-master/Pong/Content/Paddle1.png</SourceFile>
-  <SourceTime>2017-09-26T16:48:06.8413349+02:00</SourceTime>
-  <DestFile>C:/Users/timol/Downloads/Pong-master/Pong-master/Pong/Content/bin/Windows/Paddle1.xnb</DestFile>
-  <DestTime>2017-09-26T16:48:30.17024+02:00</DestTime>
+  <SourceFile>C:/Users/Henkdesteen/Source/Repos/Pong/Pong-master/Pong/Content/Paddle1.png</SourceFile>
+  <SourceTime>2017-09-27T15:13:16.4477961+02:00</SourceTime>
+  <DestFile>C:/Users/Henkdesteen/Source/Repos/Pong/Pong-master/Pong/Content/bin/Windows/Paddle1.xnb</DestFile>
+  <DestTime>2017-09-27T15:13:45.2908886+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
