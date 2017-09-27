@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Diagnostics;
-
-using System.Drawing;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Pong
 {
@@ -16,14 +16,7 @@ namespace Pong
         //public KeyboardState CurrentKBState;
 
         //textures
-        Texture2D ball;
-        Texture2D Paddle1;
-        Texture2D Paddle2;
-        Texture2D MiddleLine;
-        Texture2D pong;
-        Texture2D bluebar;
-        Texture2D redbar;
-
+        Texture2D ball, Paddle1, Paddle2, MiddleLine, pong, bluebar, redbar;
 
         //object vars
         float Paddle1Y;
@@ -41,11 +34,13 @@ namespace Pong
         Color ColorBall = Color.White;
 
         //general vars
-        int GameMode = 0;
+        int GameOver = 0;
+        int GameMode = 1;
         int StartSide;
         float BallAngle;
         float ScreenWidth;
         float ScreenHeight;
+        KeyboardState currentkeyboardstate, previouskeyboardstate;
 
         //debug waardes (ongebruikt in de gameplay)
         float DebugX, DebugY;
@@ -92,14 +87,22 @@ namespace Pong
 
         protected override void LoadContent()
         {
-
+            //MediaPlayer.Play(Content.Load<Song>("8-Bit-Mayhem"));
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            previouskeyboardstate = currentkeyboardstate;
+            currentkeyboardstate = Keyboard.GetState();
+            if (GameOver == 0 || GameOver == 2)
             {
-                GameMode = 1;
+                if (currentkeyboardstate.IsKeyDown(Keys.Down) && previouskeyboardstate.IsKeyUp(Keys.Down)) GameMode = MathHelper.Min(GameMode + 1, 3);
+                if (currentkeyboardstate.IsKeyDown(Keys.Up) && previouskeyboardstate.IsKeyUp(Keys.Up)) GameMode = MathHelper.Max(GameMode - 1, 1);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                GameOver = 1;
                 Lives1 = 3;
                 Lives2 = 3;
                 BallY = 230;
@@ -107,14 +110,15 @@ namespace Pong
                 speed = StartSpeed;
 
             }
-            if (Lives1 == 0 || Lives2 == 0) GameMode = 2;
 
-            if (GameMode == 1)
+            if (Lives1 == 0 || Lives2 == 0) GameOver = 2;
+
+            if (GameOver == 1)
             {
                 //Controls
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
-                //Controls Player 1
+                //Control Player 1
                 if (Keyboard.GetState().IsKeyDown(Keys.W) && Paddle1Y > 0)
                 {
                     Paddle1Y = Paddle1Y - SpeedPaddles;
@@ -123,20 +127,25 @@ namespace Pong
                 {
                     Paddle1Y = Paddle1Y + SpeedPaddles;
                 }
-                //Control Player 2
-                if (Keyboard.GetState().IsKeyDown(Keys.Up) && Paddle2Y > 0)
-                {
-                    Paddle2Y = Paddle2Y - SpeedPaddles;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Down) && Paddle2Y < 383)
-                {
-                    Paddle2Y = Paddle2Y + SpeedPaddles;
-                }
 
-                //AI CODE (CURRENTLY DEACTIVATED) DON'T REMOVE
-                //if (BallY + ball.Height / 2 > Paddle2Y + Paddle2.Height / 2 && Paddle2Y < GraphicsDevice.Viewport.Height - Paddle2.Height) Paddle2Y += 2;
-                //if (BallY + ball.Height / 2 < Paddle2Y + Paddle2.Height / 2 && Paddle2Y > 0) Paddle2Y -= 2;
-                //DON'T REMOVE
+                if (GameMode == 1 || GameMode == 3)
+                {
+                    //Control Player 2
+                    if (Keyboard.GetState().IsKeyDown(Keys.Up) && Paddle2Y > 0)
+                    {
+                        Paddle2Y = Paddle2Y - SpeedPaddles;
+                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.Down) && Paddle2Y < 383)
+                    {
+                        Paddle2Y = Paddle2Y + SpeedPaddles;
+                    }
+
+                }
+                if (GameMode == 2)
+                {
+                    if (BallY + ball.Height / 2 > Paddle2Y + Paddle2.Height / 2 && Paddle2Y < GraphicsDevice.Viewport.Height - Paddle2.Height) Paddle2Y += 6;
+                    if (BallY + ball.Height / 2 < Paddle2Y + Paddle2.Height / 2 && Paddle2Y > 0) Paddle2Y -= 6;
+                }
 
                 //Ball movement
                 //speed += 0.004f;
@@ -204,22 +213,46 @@ namespace Pong
 
             //Draw
             spriteBatch.Begin();
-            if (GameMode == 0)
+            if (GameOver == 0 || GameOver == 2)
             {
                 //Menu image
                 spriteBatch.Draw(pong, new Vector2(), Color.White);
                 //Menu text
-                float PressSpace = Font1.MeasureString("Press Space to start").X;
-                spriteBatch.DrawString(Font1, "Press Space to start", new Vector2((ScreenWidth / 2 - 70) - PressSpace / 2, (ScreenHeight / 2 - 40)), Color.White);
+                float DualMode = Font1.MeasureString("Dual").X;
+                if (GameMode == 1)
+                {
+                    spriteBatch.DrawString(Font1, "Dual", new Vector2((ScreenWidth / 2) - DualMode / 2, (ScreenHeight / 2)), Color.Red);
+                }
+                else
+                {
+                    spriteBatch.DrawString(Font1, "Dual", new Vector2((ScreenWidth / 2) - DualMode / 2, (ScreenHeight / 2)), Color.White);
+                }
+                float CPUMode = Font1.MeasureString("VS CPU").X;
+                if (GameMode == 2)
+                {
+                    spriteBatch.DrawString(Font1, "VS CPU", new Vector2((ScreenWidth / 2) - CPUMode / 2, (ScreenHeight / 2) + 30), Color.Red);
+                }
+                else
+                {
+                    spriteBatch.DrawString(Font1, "VS CPU", new Vector2((ScreenWidth / 2) - CPUMode / 2, (ScreenHeight / 2) + 30), Color.White);
+                }
+                if (GameMode == 3)
+                {
+                    spriteBatch.DrawString(Font1, "4 Players", new Vector2((ScreenWidth / 2) - CPUMode / 2, (ScreenHeight / 2) + 60), Color.Red);
+                }
+                else
+                {
+                    spriteBatch.DrawString(Font1, "4 Players", new Vector2((ScreenWidth / 2) - CPUMode / 2, (ScreenHeight / 2) + 60), Color.White);
+                }
             }
 
-            if (GameMode == 1)
+            if (GameOver == 1)
             {
                 //Draw Sprites
+                spriteBatch.Draw(MiddleLine, new Vector2(ScreenWidth / 2 - MiddleLine.Bounds.Width / 2, ScreenHeight / 2 - MiddleLine.Bounds.Height / 2), Color.White);
                 spriteBatch.Draw(ball, new Vector2(BallX, BallY), ColorBall);
                 spriteBatch.Draw(Paddle1, new Vector2(20, Paddle1Y), Color.Blue);
                 spriteBatch.Draw(Paddle2, new Vector2(ScreenWidth - Paddle2.Bounds.Width - 20, Paddle2Y), Color.Red);
-                spriteBatch.Draw(MiddleLine, new Vector2(ScreenWidth / 2 - MiddleLine.Bounds.Width / 2, ScreenHeight / 2 - MiddleLine.Bounds.Height / 2), Color.White);
                 //Draw Lives Player1
                 spriteBatch.Draw(bluebar, new Vector2(52, 10), Color.White);
                 spriteBatch.Draw(bluebar, new Vector2(52, 42), Color.White);
@@ -234,17 +267,19 @@ namespace Pong
                 if (Lives2 >= 1) spriteBatch.Draw(ball, new Vector2(ScreenWidth - 50, 20), Color.Red);
             }
 
-            if (GameMode == 2)
+            if (GameOver == 2)
             {
                 //Menu GameOver text
                 float YouWin = Font1.MeasureString("P1 Wins").X;
-                if (Lives2 == 0) spriteBatch.DrawString(Font1, "P1 Wins", new Vector2(ScreenWidth / 2 - YouWin / 2, ScreenHeight / 2), Color.White);
+                if (Lives2 == 0) spriteBatch.DrawString(Font1, "P1 Wins", new Vector2(ScreenWidth / 2 - YouWin / 2, ScreenHeight / 2-50), Color.White);
 
                 float YouLose = Font1.MeasureString("P2 Wins").X;
-                if (Lives1 == 0) spriteBatch.DrawString(Font1, "P2 Wins", new Vector2(ScreenWidth / 2 - YouLose / 2, ScreenHeight / 2), Color.White);
+                if (Lives1 == 0) spriteBatch.DrawString(Font1, "P2 Wins", new Vector2(ScreenWidth / 2 - YouLose / 2, ScreenHeight / 2-50), Color.White);
 
-                float PlayAgain = Font1.MeasureString("Press Space to play again").X;
-                spriteBatch.DrawString(Font1, "Press Space to play again", new Vector2(ScreenWidth / 2 - PlayAgain / 2, ScreenHeight / 2 + 35), Color.White);
+                //float PlayAgain = Font1.MeasureString("Press Enter to play again").X;
+                //spriteBatch.DrawString(Font1, "Press Enter to play again", new Vector2(ScreenWidth / 2 - PlayAgain / 2, ScreenHeight / 2 + 35), Color.White);
+
+
             }
 
             spriteBatch.End();
