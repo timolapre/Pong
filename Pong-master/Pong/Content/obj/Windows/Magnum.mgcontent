@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/timol/Downloads/Pong-master/Pong-master/Pong/Content/Magnum.spritefont</SourceFile>
+  <SourceTime>2017-09-26T16:48:06.8257071+02:00</SourceTime>
+  <DestFile>C:/Users/timol/Downloads/Pong-master/Pong-master/Pong/Content/bin/Windows/Magnum.xnb</DestFile>
+  <DestTime>2017-09-26T16:48:30.4862862+02:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2016-03-30T08:36:08+02:00</ProcessorTime>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
