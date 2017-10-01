@@ -100,3 +100,5 @@ C:\Users\timol\Source\Repos\Pong\Pong-master\Pong\obj\x86\Debug\Pong.csprojResol
 C:\Users\timol\Source\Repos\Pong\Pong-master\Pong\bin\Windows\x86\Debug\Content\8-Bit-Mayhem.wma
 C:\Users\timol\Source\Repos\Pong\Pong-master\Pong\bin\Windows\x86\Debug\Content\8-Bit-Mayhem.xnb
 C:\Users\timol\Source\Repos\Pong\Pong-master\Pong\bin\Windows\x86\Debug\Content\ping_pong_8bit_plop.xnb
+C:\Users\niels\Source\Repos\Pong2\Pong-master\Pong\obj\x86\Debug\Pong.exe
+C:\Users\niels\Source\Repos\Pong2\Pong-master\Pong\obj\x86\Debug\Pong.pdb

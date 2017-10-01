@@ -94,12 +94,15 @@ namespace Pong
         {
             previouskeyboardstate = currentkeyboardstate;
             currentkeyboardstate = Keyboard.GetState();
+
+            //menu controlls
             if (GameOver == 0 || GameOver == 2)
             {
                 if (currentkeyboardstate.IsKeyDown(Keys.Down) && previouskeyboardstate.IsKeyUp(Keys.Down)) GameMode = MathHelper.Min(GameMode + 1, 3);
                 if (currentkeyboardstate.IsKeyDown(Keys.Up) && previouskeyboardstate.IsKeyUp(Keys.Up)) GameMode = MathHelper.Max(GameMode - 1, 1);
             }
 
+            //restart game after game end
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 GameOver = 1;
@@ -111,6 +114,7 @@ namespace Pong
 
             }
 
+            //gameover screen requisites
             if (Lives1 == 0 || Lives2 == 0) GameOver = 2;
 
             if (GameOver == 1)
@@ -128,6 +132,7 @@ namespace Pong
                     Paddle1Y = Paddle1Y + SpeedPaddles;
                 }
 
+                //game mode 1 controlls load
                 if (GameMode == 1 || GameMode == 3)
                 {
                     //Control Player 2
@@ -141,6 +146,8 @@ namespace Pong
                     }
 
                 }
+
+                //gamemode 2 cpu player load
                 if (GameMode == 2)
                 {
                     if (BallY + ball.Height / 2 > Paddle2Y + Paddle2.Height / 2 && Paddle2Y < GraphicsDevice.Viewport.Height - Paddle2.Height) Paddle2Y += 6;
